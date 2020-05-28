@@ -1,0 +1,8 @@
+{
+  "name": "indecision-app",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "https://github.com/Ludde86/indecision-app.git",
+  "author": "Ludde86 <bslbjorn@gmail.com>",
+  "license": "MIT"
+}
