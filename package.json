@@ -4,5 +4,9 @@
   "main": "index.js",
   "repository": "https://github.com/Ludde86/indecision-app.git",
   "author": "Ludde86 <bslbjorn@gmail.com>",
-  "license": "MIT"
+  "license": "MIT",
+  "dependencies": {
+    "babel-preset-env": "1.5.2",
+    "babel-preset-react": "6.24.1"
+  }
 }
