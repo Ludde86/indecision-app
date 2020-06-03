@@ -2,9 +2,7 @@ class IndecisionApp extends React.Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			title: 'Indecision',
-			subtitle: 'Make your choice',
-			options: []
+			options: props.options
 		};
 		this.handleAddOption = this.handleAddOption.bind(this);
 		this.handleDeleteOptions = this.handleDeleteOptions.bind(this);
@@ -12,11 +10,12 @@ class IndecisionApp extends React.Component {
 	}
 
 	handleDeleteOptions() {
-		this.setState(() => {
-			return {
-				options: []
-			};
-		});
+		// this.setState(() => {
+		// 	return {
+		// 		options: []
+		// 	};
+		// });
+		this.setState(() => ({ options: [] }));
 		alert('Clear list of options');
 	}
 
@@ -37,20 +36,15 @@ class IndecisionApp extends React.Component {
 			// -> or -1 if the item doesnt exist at all
 			return 'This option already exists';
 		}
-		this.setState((prevState) => {
-			return {
-				options: prevState.options.concat(option)
-			};
-			// return {
-			// 	options: [ ...prevState.options, option ]
-			// };
-		});
+		this.setState((prevState) => ({ options: prevState.options.concat(option) }));
+		// 	options: [ ...prevState.options, option ]
 	}
 
 	render() {
+		const subtitle = 'Make your choice';
 		return (
 			<div>
-				<Header title={this.state.title} subtitle={this.state.subtitle} />
+				<Header subtitle={subtitle} />
 				<Action hasOptions={this.state.options.length > 0} handlePick={this.handlePick} />
 				<Options options={this.state.options} handleDeleteOptions={this.handleDeleteOptions} />
 				<AddOption options={this.state.options} handleAddOption={this.handleAddOption} />
@@ -59,13 +53,21 @@ class IndecisionApp extends React.Component {
 	}
 }
 
+IndecisionApp.defaultProps = {
+	options: []
+};
+
 const Header = (props) => {
 	return (
 		<div>
 			<h1>{props.title}</h1>
-			<h2>{props.subtitle}</h2>
+			{props.subtitle && <h2>{props.subtitle}</h2>}
 		</div>
 	);
+};
+
+Header.defaultProps = {
+	title: 'Indecision'
 };
 
 const Action = (props) => {
@@ -120,9 +122,7 @@ class AddOption extends React.Component {
 		// store the return value back (string from the app bases handleAppOption)
 		const error = this.props.handleAddOption(option);
 
-		this.setState(() => {
-			return { error };
-		});
+		this.setState(() => ({ error }));
 	}
 
 	render() {
