@@ -5,8 +5,25 @@ class IndecisionApp extends React.Component {
 			options: props.options
 		};
 		this.handleAddOption = this.handleAddOption.bind(this);
+		this.handleDeleteOption = this.handleDeleteOption.bind(this);
 		this.handleDeleteOptions = this.handleDeleteOptions.bind(this);
 		this.handlePick = this.handlePick.bind(this);
+	}
+
+	handleDeleteOption(optionToRemove) {
+		// this.setState((prevState) => ({
+		// 	options: prevState.options.filter((option) => {
+		// 		return optionToRemove !== option;
+		// 	})
+		// }));
+
+		// we filter OUT the content that doesnt match the option we want to remove
+		// this creates a new array that we set in the state
+		this.setState((prevState) => ({
+			options: prevState.options.filter((option) => optionToRemove !== option)
+		}));
+
+		alert(optionToRemove);
 	}
 
 	handleDeleteOptions() {
@@ -46,7 +63,11 @@ class IndecisionApp extends React.Component {
 			<div>
 				<Header subtitle={subtitle} />
 				<Action hasOptions={this.state.options.length > 0} handlePick={this.handlePick} />
-				<Options options={this.state.options} handleDeleteOptions={this.handleDeleteOptions} />
+				<Options
+					options={this.state.options}
+					handleDeleteOptions={this.handleDeleteOptions}
+					handleDeleteOption={this.handleDeleteOption}
+				/>
 				<AddOption options={this.state.options} handleAddOption={this.handleAddOption} />
 			</div>
 		);
@@ -84,9 +105,9 @@ const Options = (props) => {
 	return (
 		<div>
 			<button onClick={props.handleDeleteOptions}>Remove All</button>
-			{props.options.map((option) => {
-				return <Option key={option} option={option} />;
-			})}
+			{props.options.map((option) => (
+				<Option key={option} optionText={option} handleDeleteOption={props.handleDeleteOption} />
+			))}
 		</div>
 	);
 };
@@ -94,7 +115,8 @@ const Options = (props) => {
 const Option = (props) => {
 	return (
 		<div>
-			<p>{props.option}</p>
+			{props.optionText}
+			<button onClick={(e) => props.handleDeleteOption(props.optionText)}>Remove</button>
 		</div>
 	);
 };
