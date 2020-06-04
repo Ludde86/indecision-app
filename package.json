@@ -1,12 +1,18 @@
 {
-  "name": "indecision-app",
-  "version": "1.0.0",
-  "main": "index.js",
-  "repository": "https://github.com/Ludde86/indecision-app.git",
-  "author": "Ludde86 <bslbjorn@gmail.com>",
-  "license": "MIT",
-  "dependencies": {
-    "babel-preset-env": "1.5.2",
-    "babel-preset-react": "6.24.1"
-  }
+	"name": "indecision-app",
+	"version": "1.0.0",
+	"main": "index.js",
+	"repository": "https://github.com/Ludde86/indecision-app.git",
+	"author": "Ludde86 <bslbjorn@gmail.com>",
+	"license": "MIT",
+	"scripts": {
+		"serve": "live-server public/",
+		"build": "babel src/app.js --out-file=public/scripts/app.js --presets=env,react --watch"
+	},
+	"dependencies": {
+		"babel-cli": "6.24.1",
+		"babel-preset-env": "1.5.2",
+		"babel-preset-react": "6.24.1",
+		"live-server": "^1.2.1"
+	}
 }
