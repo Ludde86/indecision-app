@@ -10,7 +10,32 @@ class IndecisionApp extends React.Component {
 		this.handlePick = this.handlePick.bind(this);
 	}
 
+	// fetch the last saved data
+	componentDidMount() {
+		// if data is not valid
+		try {
+			const json = JSON.parse(localStorage.getItem('options'));
+
+			// if no data
+			if (json) {
+				this.setState(() => ({ options: json }));
+			}
+		} catch (error) {
+			// Do nothing
+		}
+	}
+	componentDidUpdate(prevProps, prevState) {
+		if (prevState.options.length !== this.state.options.length) {
+			const json = JSON.stringify(this.state.options);
+			localStorage.setItem('options', json);
+		}
+	}
+
+	// JSON.stringify = takes a regular javascript object and get the string representation
+	// JSON.parse = takes the string representation and return a true javascript object
+
 	handleDeleteOption(optionToRemove) {
+		console.log('optionToRemove', optionToRemove);
 		// this.setState((prevState) => ({
 		// 	options: prevState.options.filter((option) => {
 		// 		return optionToRemove !== option;
@@ -105,6 +130,7 @@ const Options = (props) => {
 	return (
 		<div>
 			<button onClick={props.handleDeleteOptions}>Remove All</button>
+			{!props.options.length && <p>Options is empty</p>}
 			{props.options.map((option) => (
 				<Option key={option} optionText={option} handleDeleteOption={props.handleDeleteOption} />
 			))}
@@ -116,7 +142,7 @@ const Option = (props) => {
 	return (
 		<div>
 			{props.optionText}
-			<button onClick={(e) => props.handleDeleteOption(props.optionText)}>Remove</button>
+			<button onClick={() => props.handleDeleteOption(props.optionText)}>Remove</button>
 		</div>
 	);
 };
@@ -145,6 +171,11 @@ class AddOption extends React.Component {
 		const error = this.props.handleAddOption(option);
 
 		this.setState(() => ({ error }));
+
+		// if no error, clear the input
+		if (!error) {
+			e.target.elements.option.value = '';
+		}
 	}
 
 	render() {

@@ -26,9 +26,42 @@ var IndecisionApp = function (_React$Component) {
 		return _this;
 	}
 
+	// fetch the last saved data
+
+
 	_createClass(IndecisionApp, [{
+		key: 'componentDidMount',
+		value: function componentDidMount() {
+			// if data is not valid
+			try {
+				var json = JSON.parse(localStorage.getItem('options'));
+
+				// if no data
+				if (json) {
+					this.setState(function () {
+						return { options: json };
+					});
+				}
+			} catch (error) {
+				// Do nothing
+			}
+		}
+	}, {
+		key: 'componentDidUpdate',
+		value: function componentDidUpdate(prevProps, prevState) {
+			if (prevState.options.length !== this.state.options.length) {
+				var json = JSON.stringify(this.state.options);
+				localStorage.setItem('options', json);
+			}
+		}
+
+		// JSON.stringify = takes a regular javascript object and get the string representation
+		// JSON.parse = takes the string representation and return a true javascript object
+
+	}, {
 		key: 'handleDeleteOption',
 		value: function handleDeleteOption(optionToRemove) {
+			console.log('optionToRemove', optionToRemove);
 			// this.setState((prevState) => ({
 			// 	options: prevState.options.filter((option) => {
 			// 		return optionToRemove !== option;
@@ -153,6 +186,11 @@ var Options = function Options(props) {
 			{ onClick: props.handleDeleteOptions },
 			'Remove All'
 		),
+		!props.options.length && React.createElement(
+			'p',
+			null,
+			'Options is empty'
+		),
 		props.options.map(function (option) {
 			return React.createElement(Option, { key: option, optionText: option, handleDeleteOption: props.handleDeleteOption });
 		})
@@ -166,7 +204,7 @@ var Option = function Option(props) {
 		props.optionText,
 		React.createElement(
 			'button',
-			{ onClick: function onClick(e) {
+			{ onClick: function onClick() {
 					return props.handleDeleteOption(props.optionText);
 				} },
 			'Remove'
@@ -208,6 +246,11 @@ var AddOption = function (_React$Component2) {
 			this.setState(function () {
 				return { error: error };
 			});
+
+			// if no error, clear the input
+			if (!error) {
+				e.target.elements.option.value = '';
+			}
 		}
 	}, {
 		key: 'render',
