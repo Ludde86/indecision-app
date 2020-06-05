@@ -10,5 +10,17 @@ module.exports = {
 	output: {
 		path: path.join(__dirname, 'public'),
 		filename: 'bundle.js'
+	},
+	module: {
+		rules: [
+			{
+				loader: 'babel-loader',
+				test: /\.js$/,
+				exclude: /node_modules/
+			}
+		]
 	}
 };
+
+// loader - customize the behavior of webpack, when it loads a given file
+// setup the loader (from babel)
