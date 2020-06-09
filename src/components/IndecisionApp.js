@@ -3,10 +3,12 @@ import AddOption from './AddOption';
 import Action from './Action';
 import Header from './Header';
 import Options from './Options';
+import OptionModal from './OptionModal';
 
 export default class IndecisionApp extends React.Component {
 	state = {
-		options: []
+		options: [],
+		selectedOption: undefined
 	};
 
 	handleAddOption = (option) => {
@@ -22,12 +24,6 @@ export default class IndecisionApp extends React.Component {
 		}
 		this.setState((prevState) => ({ options: prevState.options.concat(option) }));
 		// 	options: [ ...prevState.options, option ]
-	};
-
-	handlePick = () => {
-		// const randomNum = Math.floor(Math.random() * this.state.options.length);
-		// const randomOpt = this.state.options[Math.floor(Math.random() * this.state.options.length)];
-		alert(this.state.options[Math.floor(Math.random() * this.state.options.length)]);
 	};
 
 	handleDeleteOption = (optionToRemove) => {
@@ -55,6 +51,20 @@ export default class IndecisionApp extends React.Component {
 		// });
 		this.setState(() => ({ options: [] }));
 		alert('Clear list of options');
+	};
+
+	handlePick = () => {
+		// const randomNum = Math.floor(Math.random() * this.state.options.length);
+		const randomOption = this.state.options[Math.floor(Math.random() * this.state.options.length)];
+		this.setState(() => ({
+			selectedOption: randomOption
+		}));
+	};
+
+	handleClearSelectedOption = () => {
+		this.setState(() => ({
+			selectedOption: undefined
+		}));
 	};
 
 	// fetch the last saved data
@@ -93,6 +103,10 @@ export default class IndecisionApp extends React.Component {
 					handleDeleteOption={this.handleDeleteOption}
 				/>
 				<AddOption options={this.state.options} handleAddOption={this.handleAddOption} />
+				<OptionModal
+					selectedOption={this.state.selectedOption}
+					handleClearSelectedOption={this.handleClearSelectedOption}
+				/>
 			</div>
 		);
 	}
